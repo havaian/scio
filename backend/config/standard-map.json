@@ -1,0 +1,1031 @@
+{
+  "_comment": "Maps each check to the exact clause it enforces. verified=true: the clause was read in the source document. Sources are listed under 'documents'. Georgian guides are in Georgian; section numbers refer to the original.",
+  "documents": {
+    "GE-XS2A": {
+      "title": "Georgian NextGenPSD2 XS2A Implementation Guide 0.8.RC3 (Banking Association of Georgia, 12 Sep 2022)",
+      "url": "https://cdn.association.ge/static/openbanking/standards/pdf/NextGenPSD2_XS2A_Implementation_Guide_0.8.RC3_hL6sJdA.pdf"
+    },
+    "GE-IAA": {
+      "title": "Georgian Identification, Authentication and Authorization Guide 0.8.RC1 (Banking Association of Georgia, 30 Sep 2021)",
+      "url": "https://cdn.association.ge/static/openbanking/standards/pdf/Open_Finance_IAA_Implementation_Guide_0.8.RC1.pdf"
+    },
+    "GE-JWS": {
+      "title": "Georgian JWS Implementation Guide for Open Finance 0.5.RC1 (Banking Association of Georgia, 6 Sep 2021)",
+      "url": "https://cdn.association.ge/static/openbanking/standards/pdf/OpenFinance_Json_Web_Signature_Profile_0.5.RC1.pdf"
+    },
+    "BG-IG": {
+      "title": "Berlin Group NextGenPSD2 XS2A Implementation Guidelines 1.3.11 (24 Sep 2021). The Georgian guide references 1.3.9; the sections cited here (4.12, 4.13, 14.x) keep the same numbering, as the Georgian guide's own cross-references confirm.",
+      "url": "https://berlin-group.org/standard/open-banking-nextgenpsd2/"
+    },
+    "OAS": {
+      "title": "OpenAPI Specification 3.0",
+      "url": "https://spec.openapis.org/oas/v3.0.3"
+    },
+    "RFC": {
+      "title": "IETF RFCs",
+      "url": "https://www.rfc-editor.org"
+    },
+    "FAPI1": {
+      "title": "OpenID FAPI Part 1 as referenced by GE-IAA (13) (Financial-grade API - Part 1: Read-Only API Security Profile; final text published as FAPI 1.0 Part 1: Baseline, 12 March 2021); required by GE-IAA §6.1",
+      "url": "https://openid.net/specs/openid-financial-api-part-1-1_0.html"
+    },
+    "ISO": {
+      "title": "ISO 13616 (IBAN), ISO 4217 (currency codes)",
+      "url": "https://www.iso.org"
+    }
+  },
+  "checks": {
+    "spec.available": {
+      "refs": [
+        "GE-XS2A §7",
+        "BG-IG §4.11"
+      ],
+      "verified": true,
+      "note": "API structure must follow the Berlin Group framework; a machine-readable spec is how TPPs check it."
+    },
+    "spec.path-template": {
+      "refs": [
+        "OAS §3.2 (path templating)",
+        "OAS §4.7.8 (paths object)",
+        "GE-XS2A §7.1"
+      ],
+      "verified": true
+    },
+    "spec.path-params": {
+      "refs": [
+        "OAS §4.7.12 (parameter object: path parameters are required)"
+      ],
+      "verified": true
+    },
+    "spec.x-request-id-required": {
+      "refs": [
+        "GE-XS2A §7.7",
+        "RFC 4122"
+      ],
+      "verified": true,
+      "note": "Every API request must carry X-Request-ID of type UUID."
+    },
+    "spec.security-schemes-unused": {
+      "refs": [
+        "OAS §4.7.27 (security scheme object)",
+        "OAS §4.7.30 (security requirement object)"
+      ],
+      "verified": true
+    },
+    "spec.mtls-documented": {
+      "refs": [
+        "GE-XS2A §5.2",
+        "GE-IAA §5.2",
+        "RFC 8705"
+      ],
+      "verified": true
+    },
+    "spec.examples-valid": {
+      "refs": [
+        "OAS §4.7.19 (example object)",
+        "BG-IG §6.3.1 (consent request attributes)"
+      ],
+      "verified": true
+    },
+    "spec.schema-valid": {
+      "refs": [
+        "OAS §4.7.24 (schema object)"
+      ],
+      "verified": true
+    },
+    "spec.error-responses": {
+      "refs": [
+        "GE-XS2A §7.3",
+        "BG-IG §4.12",
+        "BG-IG §4.13"
+      ],
+      "verified": true
+    },
+    "spec.version-path": {
+      "refs": [
+        "GE-XS2A §7.1"
+      ],
+      "verified": true,
+      "note": "URL format https://{provider}/{version}/v1/{service}; version is 0.8 for 0.8.RC3."
+    },
+    "flow.consent": {
+      "refs": [
+        "GE-XS2A §9.2.1",
+        "BG-IG §6.3.1"
+      ],
+      "verified": true
+    },
+    "flow.authorize": {
+      "refs": [
+        "GE-IAA §6.1",
+        "GE-XS2A §9.2.1",
+        "BG-IG §6.3.1"
+      ],
+      "verified": true
+    },
+    "flow.token": {
+      "refs": [
+        "GE-IAA §6.1",
+        "RFC 6749 §4.1.3"
+      ],
+      "verified": true
+    },
+    "live.schema": {
+      "refs": [
+        "GE-XS2A §7",
+        "BG-IG §6.5"
+      ],
+      "verified": true,
+      "note": "Compared with the bank's own published specification."
+    },
+    "live.x-request-id-echo": {
+      "refs": [
+        "GE-XS2A §7.7",
+        "BG-IG §6.5 (response header X-Request-ID)"
+      ],
+      "verified": true
+    },
+    "live.consent-created": {
+      "refs": [
+        "GE-XS2A §9.2.1",
+        "BG-IG §6.3.1",
+        "BG-IG §4.15 (hyperlinks)"
+      ],
+      "verified": true
+    },
+    "live.consent-delete": {
+      "refs": [
+        "GE-XS2A §9.2.4",
+        "BG-IG §6.4",
+        "BG-IG §4.12 (204)",
+        "BG-IG §4.14.2 (terminatedByTpp)"
+      ],
+      "verified": true
+    },
+    "live.error-format": {
+      "refs": [
+        "GE-XS2A §7.3",
+        "BG-IG §4.13.3",
+        "BG-IG §14.2",
+        "BG-IG §14.12 (RFC 7807 variant)"
+      ],
+      "verified": true,
+      "note": "Either variant is allowed: tppMessages (category ERROR/WARNING + message code) or RFC 7807 with a message code."
+    },
+    "live.error-content-type": {
+      "refs": [
+        "BG-IG §4.13.3",
+        "BG-IG §14.12",
+        "RFC 7807"
+      ],
+      "verified": true
+    },
+    "live.error-code-status": {
+      "refs": [
+        "GE-XS2A §7.3",
+        "BG-IG §14.11"
+      ],
+      "verified": true,
+      "note": "Each message code has a fixed HTTP status."
+    },
+    "live.with-balance": {
+      "refs": [
+        "GE-XS2A §9.3.3",
+        "BG-IG §6.5.1"
+      ],
+      "verified": true,
+      "note": "withBalance=true with a balance consent: balances must be returned; without it: must not."
+    },
+    "live.without-balance": {
+      "refs": [
+        "GE-XS2A §9.3.3"
+      ],
+      "verified": true,
+      "note": "Account list without withBalance=true: balances must never be returned."
+    },
+    "live.account-links": {
+      "refs": [
+        "GE-XS2A §9.3.4",
+        "BG-IG §6.5.2",
+        "BG-IG §14.6"
+      ],
+      "verified": true,
+      "note": "balances/transactions links are mandatory when the consent covers them, forbidden otherwise."
+    },
+    "live.booking-status": {
+      "refs": [
+        "GE-XS2A §9.3.6",
+        "BG-IG §6.5.4"
+      ],
+      "verified": true,
+      "note": "booked, pending and both must be supported."
+    },
+    "neg.missing-request-id": {
+      "refs": [
+        "GE-XS2A §7.7",
+        "BG-IG §14.11.1 (FORMAT_ERROR, 400)"
+      ],
+      "verified": true
+    },
+    "neg.invalid-request-id": {
+      "refs": [
+        "GE-XS2A §7.7",
+        "RFC 4122",
+        "BG-IG §14.11.1 (FORMAT_ERROR, 400)"
+      ],
+      "verified": true
+    },
+    "neg.no-token": {
+      "refs": [
+        "GE-XS2A §9.3.1",
+        "BG-IG §14.11.1 (TOKEN_UNKNOWN/TOKEN_INVALID, 401)"
+      ],
+      "verified": true
+    },
+    "neg.bad-token": {
+      "refs": [
+        "GE-XS2A §9.3.1",
+        "BG-IG §14.11.1 (TOKEN_INVALID, 401)"
+      ],
+      "verified": true
+    },
+    "neg.missing-consent-id": {
+      "refs": [
+        "GE-XS2A §9.3.1 (Authorization and Consent-ID mandatory)",
+        "BG-IG §14.11.1 (FORMAT_ERROR, 400)"
+      ],
+      "verified": true
+    },
+    "neg.unknown-consent": {
+      "refs": [
+        "GE-XS2A §9.3.1 (token bound to its consent)",
+        "BG-IG §14.11.1 (CONSENT_UNKNOWN, 400 if header)"
+      ],
+      "verified": true
+    },
+    "neg.unknown-account": {
+      "refs": [
+        "BG-IG §14.11.1 (RESOURCE_UNKNOWN, 404 if account-id in path)",
+        "BG-IG §4.12"
+      ],
+      "verified": true
+    },
+    "neg.bad-consent-body": {
+      "refs": [
+        "GE-XS2A §9.1.1",
+        "BG-IG §14.11.1 (FORMAT_ERROR, 400)"
+      ],
+      "verified": true
+    },
+    "neg.bad-date": {
+      "refs": [
+        "GE-XS2A §9.3.6",
+        "BG-IG §14.11.1 (FORMAT_ERROR, 400)"
+      ],
+      "verified": true
+    },
+    "neg.reversed-period": {
+      "refs": [
+        "GE-XS2A §9.3.6",
+        "BG-IG §14.11.1 (PERIOD_INVALID / FORMAT_ERROR, 400)"
+      ],
+      "verified": true
+    },
+    "rel.availability": {
+      "refs": [
+        "BG-IG §4.12 (503)",
+        "RFC 9110 §15.6.4"
+      ],
+      "verified": true,
+      "note": "Neither standard sets numeric availability targets; thresholds are assumed until NBG publishes them."
+    },
+    "rel.retry-after": {
+      "refs": [
+        "RFC 9110 §10.2.3",
+        "BG-IG §14.11.3 (ACCESS_EXCEEDED, 429)"
+      ],
+      "verified": true
+    },
+    "lat.p95": {
+      "refs": [],
+      "verified": false,
+      "note": "No latency requirement in the Georgian or Berlin Group documents; threshold is an assumption until NBG publishes indicators."
+    },
+    "sec.discovery": {
+      "refs": [
+        "GE-IAA §5.6",
+        "RFC 8414"
+      ],
+      "verified": true,
+      "note": "GE-IAA §5.6 requires the TPP to verify hyperlinks and the authenticity of the OAuth2 server metadata (RFC 8414); it does not itself oblige the bank to publish a discovery document. Missing metadata is reported because a TPP then has nothing to verify or configure from."
+    },
+    "sec.client-auth": {
+      "refs": [
+        "GE-XS2A §5.2",
+        "GE-IAA §5.2",
+        "RFC 8705 §2"
+      ],
+      "verified": true,
+      "note": "Client authentication and token issuance must use the QWAC certificates (RFC 8705)."
+    },
+    "sec.bound-tokens": {
+      "refs": [
+        "GE-XS2A §5.2",
+        "RFC 8705 §3"
+      ],
+      "verified": true
+    },
+    "sec.pkce-methods": {
+      "refs": [
+        "GE-IAA §6.1",
+        "FAPI1 §5.2.2-7",
+        "RFC 7636 §4.2"
+      ],
+      "verified": true,
+      "note": "GE-IAA §6.1 requires full FAPI Part 1 compliance; FAPI 5.2.2-7: shall require RFC 7636 with S256."
+    },
+    "sec.pkce-enforced": {
+      "refs": [
+        "GE-IAA §6.1",
+        "FAPI1 §5.2.2-7",
+        "RFC 7636 §4.6"
+      ],
+      "verified": true
+    },
+    "sec.code-replay": {
+      "refs": [
+        "GE-IAA §6.1",
+        "FAPI1 §5.2.2-13",
+        "RFC 6749 §4.1.2"
+      ],
+      "verified": true
+    },
+    "sec.redirect-binding": {
+      "refs": [
+        "GE-IAA §6.1",
+        "FAPI1 §5.2.2-10",
+        "RFC 6749 §4.1.3"
+      ],
+      "verified": true
+    },
+    "sec.https-endpoints": {
+      "refs": [
+        "GE-XS2A §5.2",
+        "RFC 8414 §2"
+      ],
+      "verified": true
+    },
+    "sec.mtls-enforced": {
+      "refs": [
+        "GE-XS2A §5",
+        "GE-XS2A §5.2",
+        "GE-XS2A §5.5",
+        "BG-IG §14.11.1 (CERTIFICATE_MISSING, 401)"
+      ],
+      "verified": true
+    },
+    "sec.tls": {
+      "refs": [
+        "GE-XS2A §5.2 (TLS 1.2 or higher)",
+        "GE-XS2A §5.5"
+      ],
+      "verified": true
+    },
+    "sec.message-signing": {
+      "refs": [
+        "GE-XS2A §5.4",
+        "GE-XS2A §7.4",
+        "GE-JWS §5",
+        "GE-JWS §7"
+      ],
+      "verified": true,
+      "note": "JWS seal (x-jws-signature + Digest) on every request and response; the Berlin Group signature form must not be used. Sandboxes: one unsigned read-only call; mock: warning only (its spec relaxes the headers)."
+    },
+    "sec.response-signed": {
+      "refs": [
+        "GE-XS2A §5.4",
+        "GE-XS2A §7.4",
+        "GE-JWS §5",
+        "GE-JWS §7"
+      ],
+      "verified": true
+    },
+    "sec.hsts": {
+      "refs": [
+        "RFC 6797"
+      ],
+      "verified": true,
+      "note": "Not required by the Georgian or Berlin Group documents; transport hardening best practice."
+    },
+    "sec.cors": {
+      "refs": [
+        "GE-XS2A §5 (TPP-ASPSP channel is mutually authenticated server-to-server)"
+      ],
+      "verified": true,
+      "note": "No explicit CORS rule in the standard; flagged as best practice."
+    },
+    "sec.token-lifetime": {
+      "refs": [
+        "RFC 6749 §5.1"
+      ],
+      "verified": true,
+      "note": "No lifetime is mandated; reported for information."
+    },
+    "data.iban": {
+      "refs": [
+        "ISO 13616"
+      ],
+      "verified": true,
+      "note": "GE IBAN: 22 characters, SWIFT IBAN registry."
+    },
+    "data.currency": {
+      "refs": [
+        "BG-IG §14.3",
+        "ISO 4217"
+      ],
+      "verified": true
+    },
+    "data.amount-format": {
+      "refs": [
+        "BG-IG §14.3"
+      ],
+      "verified": true,
+      "note": "String, up to 14 significant figures, dot as decimal separator, minus for negatives."
+    },
+    "data.date-format": {
+      "refs": [
+        "BG-IG §2.1 (ISODate)",
+        "BG-IG §14.24 (bookingDate, valueDate: ISODate)"
+      ],
+      "verified": true
+    },
+    "data.balance-types": {
+      "refs": [
+        "BG-IG §14.21"
+      ],
+      "verified": true,
+      "note": "Allowed: closingBooked, expected, openingBooked, interimAvailable, interimBooked, forwardAvailable, nonInvoiced."
+    },
+    "data.tx-window": {
+      "refs": [
+        "GE-XS2A §9.3.6",
+        "BG-IG §6.5.4"
+      ],
+      "verified": true,
+      "note": "Booked may include items certain to post in the current banking day (§9.3.6); banks book on Tbilisi dates, so one day after dateTo is tolerated."
+    },
+    "data.tx-ids": {
+      "refs": [
+        "GE-XS2A §9.3.6.6",
+        "GE-XS2A §9.3.6.1 (entryReferenceFrom paging; the only case where the identifier may change)",
+        "GE-XS2A §9.4.8 (card accounts: no entryReferenceFrom paging)",
+        "BG-IG §14.24 (entryReference: Max35Text)"
+      ],
+      "verified": true,
+      "note": "entryReference is mandatory on every transaction and unique within the consent across booked and pending (§9.3.6.6); transactionId is conditional. Card-account transactions are checked by cardTransactionId."
+    },
+    "ai.generated-test": {
+      "refs": [
+        "BG-IG §14.11.1 (FORMAT_ERROR, 400)"
+      ],
+      "verified": true
+    },
+    "ai.error-quality": {
+      "refs": [
+        "BG-IG §14.2 (text, path)",
+        "BG-IG §14.11"
+      ],
+      "verified": true
+    },
+    "ai.status": {
+      "refs": [],
+      "verified": true,
+      "note": "Informational: AI layer status, enforces no clause."
+    },
+    "sec.mock-note": {
+      "refs": [],
+      "verified": true,
+      "note": "Informational: describes the simulated target."
+    },
+    "ai.generated-tests": {
+      "refs": [],
+      "verified": true,
+      "note": "Informational summary of AI-generated tests."
+    },
+    "ai.qvac": {
+      "refs": [],
+      "verified": true,
+      "note": "Informational: local AI status."
+    },
+    "data.balance-minimum": {
+      "refs": [
+        "GE-XS2A §9.3.3",
+        "GE-XS2A §9.3.4",
+        "GE-XS2A §9.3.5",
+        "GE-XS2A §9.4.7"
+      ],
+      "verified": true,
+      "note": "List: at least one interim (interimAvailable preferred). Details: interimAvailable + interimBooked. Balances: closingBooked + interimAvailable. Card-account balances (/v1/card-accounts/{id}/balances): every balance returned for an account, so closingBooked + interimAvailable (§9.4.7). Card balances (/v1/cards/{id}/balances): at least interimAvailable."
+    },
+    "pis.create": {
+      "refs": [
+        "GE-XS2A §8.3.1",
+        "GE-XS2A §8.2",
+        "BG-IG §5.3"
+      ],
+      "verified": true
+    },
+    "pis.create-response": {
+      "refs": [
+        "GE-XS2A §8.3.1",
+        "BG-IG §5.3"
+      ],
+      "verified": true
+    },
+    "pis.authorize": {
+      "refs": [
+        "GE-XS2A §8.4",
+        "GE-IAA §6",
+        "RFC 7636"
+      ],
+      "verified": true
+    },
+    "pis.status": {
+      "refs": [
+        "GE-XS2A §8.5",
+        "BG-IG §14.13"
+      ],
+      "verified": true,
+      "note": "transactionStatus uses the ISO 20022 code list."
+    },
+    "pis.echo": {
+      "refs": [
+        "GE-XS2A §8.6"
+      ],
+      "verified": true,
+      "note": "The payment resource must reflect what was initiated."
+    },
+    "pis.cancel": {
+      "refs": [
+        "GE-XS2A §8.7",
+        "BG-IG §14.11 (CANCELLATION_INVALID 405)"
+      ],
+      "verified": true
+    },
+    "pis.neg.missing-creditor": {
+      "refs": [
+        "GE-XS2A §8.2",
+        "BG-IG §14.11 (FORMAT_ERROR 400)"
+      ],
+      "verified": true
+    },
+    "pis.neg.bad-iban": {
+      "refs": [
+        "GE-XS2A §7.6",
+        "ISO 13616"
+      ],
+      "verified": false
+    },
+    "pis.neg.bad-amount": {
+      "refs": [
+        "GE-XS2A §8.2",
+        "BG-IG §14.11 (FORMAT_ERROR 400)"
+      ],
+      "verified": true
+    },
+    "pis.neg.negative-amount": {
+      "refs": [
+        "GE-XS2A §8.2"
+      ],
+      "verified": false
+    },
+    "pis.neg.bad-currency": {
+      "refs": [
+        "ISO 4217",
+        "BG-IG §14.11 (FORMAT_ERROR 400)"
+      ],
+      "verified": true
+    },
+    "pis.neg.unknown-product": {
+      "refs": [
+        "GE-XS2A §8.1",
+        "BG-IG §14.11 (PRODUCT_UNKNOWN 404)"
+      ],
+      "verified": true
+    },
+    "pis.neg.unknown-payment": {
+      "refs": [
+        "BG-IG §14.11 (RESOURCE_UNKNOWN 403 for a non-account resource in path)"
+      ],
+      "verified": true
+    },
+    "pis.neg.no-token": {
+      "refs": [
+        "GE-IAA §6",
+        "BG-IG §14.11 (TOKEN_UNKNOWN 401)"
+      ],
+      "verified": true
+    },
+    "pis.neg.ais-token": {
+      "refs": [
+        "GE-IAA §6",
+        "BG-IG §14.11 (TOKEN_INVALID 401)"
+      ],
+      "verified": true,
+      "note": "A token is valid only for the service and resource it was issued for."
+    },
+    "pis.recurring": {
+      "refs": [
+        "BG-IG §5.3 (periodic payments)"
+      ],
+      "verified": false,
+      "note": "Service added to the Georgian framework after XS2A guide 0.8.RC3; no clause in the documents provided. Checked against Berlin Group conventions."
+    },
+    "pis.recurring-response": {
+      "refs": [
+        "BG-IG §5.3"
+      ],
+      "verified": false,
+      "note": "Service added to the Georgian framework after XS2A guide 0.8.RC3; no clause in the documents provided. Checked against Berlin Group conventions."
+    },
+    "pis.recurring.neg": {
+      "refs": [
+        "BG-IG §14.11"
+      ],
+      "verified": false,
+      "note": "Service added to the Georgian framework after XS2A guide 0.8.RC3; no clause in the documents provided. Checked against Berlin Group conventions."
+    },
+    "pis.deferred": {
+      "refs": [
+        "GE-XS2A §8.2.8",
+        "BG-IG §5.3"
+      ],
+      "verified": true,
+      "note": "requestedExecutionDate is defined in §8.2.8; the v2 deferred-payments service itself is a later addition."
+    },
+    "pis.deferred-response": {
+      "refs": [
+        "GE-XS2A §8.2.8",
+        "BG-IG §5.3"
+      ],
+      "verified": true
+    },
+    "pis.deferred.neg": {
+      "refs": [
+        "GE-XS2A §8.2.8",
+        "BG-IG §14.11 (EXECUTION_DATE_INVALID 400)"
+      ],
+      "verified": true
+    },
+    "v2.consent": {
+      "refs": [
+        "GE-XS2A §9.2.1"
+      ],
+      "verified": false,
+      "note": "Service added to the Georgian framework after XS2A guide 0.8.RC3; no clause in the documents provided. Checked against Berlin Group conventions. Consent mechanics follow §9.2."
+    },
+    "v2.authorize": {
+      "refs": [
+        "GE-XS2A §9.3.1",
+        "GE-IAA §6"
+      ],
+      "verified": false,
+      "note": "Service added to the Georgian framework after XS2A guide 0.8.RC3; no clause in the documents provided. Checked against Berlin Group conventions."
+    },
+    "v2.consent-status": {
+      "refs": [
+        "GE-XS2A §9.2.2"
+      ],
+      "verified": false,
+      "note": "Service added to the Georgian framework after XS2A guide 0.8.RC3; no clause in the documents provided. Checked against Berlin Group conventions."
+    },
+    "v2.consent-delete": {
+      "refs": [
+        "GE-XS2A §9.2.4"
+      ],
+      "verified": false,
+      "note": "Service added to the Georgian framework after XS2A guide 0.8.RC3; no clause in the documents provided. Checked against Berlin Group conventions."
+    },
+    "v2.savings.list": {
+      "refs": [],
+      "verified": false,
+      "note": "Service added to the Georgian framework after XS2A guide 0.8.RC3; no clause in the documents provided. Checked against Berlin Group conventions."
+    },
+    "v2.loans.list": {
+      "refs": [],
+      "verified": false,
+      "note": "Service added to the Georgian framework after XS2A guide 0.8.RC3; no clause in the documents provided. Checked against Berlin Group conventions."
+    },
+    "v2.savings.balances": {
+      "refs": [],
+      "verified": false,
+      "note": "Service added to the Georgian framework after XS2A guide 0.8.RC3; no clause in the documents provided. Checked against Berlin Group conventions."
+    },
+    "v2.loans.balances": {
+      "refs": [],
+      "verified": false,
+      "note": "Service added to the Georgian framework after XS2A guide 0.8.RC3; no clause in the documents provided. Checked against Berlin Group conventions."
+    },
+    "v2.path-as-documented": {
+      "refs": [
+        "OAS §4.7.8 (paths object)",
+        "OAS §3.2 (path templating)"
+      ],
+      "verified": true
+    },
+    "v2.neg.no-consent": {
+      "refs": [
+        "BG-IG §14.11 (FORMAT_ERROR 400)"
+      ],
+      "verified": true
+    },
+    "v2.neg.no-token": {
+      "refs": [
+        "GE-IAA §6",
+        "BG-IG §14.11 (TOKEN_UNKNOWN 401)"
+      ],
+      "verified": true
+    },
+    "v2.neg.unknown-resource": {
+      "refs": [
+        "BG-IG §14.11 (RESOURCE_UNKNOWN)"
+      ],
+      "verified": true
+    },
+    "v2.neg.ais-consent": {
+      "refs": [
+        "GE-XS2A §9.1"
+      ],
+      "verified": false,
+      "note": "A consent grants only the access it lists."
+    },
+    "spec.success-responses": {
+      "refs": [
+        "OAS §4.7.16 (responses object)"
+      ],
+      "verified": true
+    },
+    "spec.error-examples": {
+      "refs": [
+        "OAS §4.7.20 (example object)",
+        "BG-IG §14.11"
+      ],
+      "verified": true
+    },
+    "spec.example-ibans": {
+      "refs": [
+        "ISO 13616"
+      ],
+      "verified": true
+    },
+    "spec.duplicate-headers": {
+      "refs": [
+        "GE-XS2A §7",
+        "RFC 9110 §5.1 (field names are case-insensitive)"
+      ],
+      "verified": true
+    },
+    "rel.flow-outage": {
+      "refs": [],
+      "verified": true,
+      "note": "Availability; no numeric clause in the standards provided. Threshold is an assumption."
+    },
+    "sec.digest-valid": {
+      "refs": [
+        "GE-JWS §7",
+        "GE-JWS §9.4",
+        "GE-JWS §10.6"
+      ],
+      "verified": true,
+      "note": "Digest is mandatory (§7) and must equal SHA-256 of the body, Base64 (§9.4); verifiers compare it (§10.6)."
+    },
+    "sec.jws-header": {
+      "refs": [
+        "GE-JWS §6",
+        "GE-JWS §9.8"
+      ],
+      "verified": true,
+      "note": "b64, sigT, sigD and the certificate reference are mandatory protected header fields (§6)."
+    },
+    "sec.server-cert-chain": {
+      "refs": [
+        "GE-XS2A §5.2",
+        "RFC 5246 §7.4.2 (certificate chain)"
+      ],
+      "verified": false
+    },
+    "lat.samples": {
+      "refs": [],
+      "verified": true,
+      "note": "Statistical guardrail, not a standard requirement."
+    },
+    "pis.recurring-day-type": {
+      "refs": [
+        "BG-IG §5.3 (dayOfExecution Max2Text)"
+      ],
+      "verified": true
+    },
+    "spec.servers": {
+      "refs": [
+        "OAS §4.7.5 (server object)"
+      ],
+      "verified": true
+    },
+    "spec.standard-version": {
+      "refs": [
+        "GE-XS2A §7.1 (standard version in the URL)",
+        "GE-XS2A §2.1.1 (minimum mandatory version: 0.8.RC1 or newer)"
+      ],
+      "verified": true,
+      "note": "Informational. No clause governs info.version; §7.1 puts the standard version in the URL (judged by spec.version-path) and §2.1.1 sets 0.8.RC1 as the minimum, older versions may run in parallel."
+    },
+    "spec.core-paths": {
+      "refs": [
+        "GE-XS2A §7.1",
+        "GE-XS2A §8.3",
+        "GE-XS2A §9.2",
+        "GE-XS2A §9.3"
+      ],
+      "verified": true,
+      "note": "0.8 paths: /v1/consents, /v1/accounts..., /v1/payments/{payment-product} under the /0.8 base."
+    },
+    "spec.auth-documented": {
+      "refs": [
+        "GE-IAA §6",
+        "OAS §4.7.27 (security scheme object)",
+        "FAPI1"
+      ],
+      "verified": false
+    },
+    "spec.amount-type": {
+      "refs": [
+        "BG-IG §14.3 (Amount)"
+      ],
+      "verified": true,
+      "note": "amount: String, the decimal separator is a dot."
+    },
+    "spec.string-types": {
+      "refs": [
+        "BG-IG §14 (data types: Max35Text, IBAN, ISO 4217 codes)",
+        "OAS §4.7.24 (schema object)"
+      ],
+      "verified": true
+    },
+    "spec.parse": {
+      "refs": [
+        "OAS §4.2 (format: JSON or YAML 1.2)",
+        "YAML 1.2 §8.1 (block scalars)"
+      ],
+      "verified": true
+    },
+    "sec.jws-typ-required": {
+      "refs": [
+        "GE-JWS §6 (typ: not recommended; JOSE if present)",
+        "RFC 7515 §4.1.9"
+      ],
+      "verified": true
+    },
+    "spec.consent-example": {
+      "refs": [
+        "BG-IG §6.3.1 (frequencyPerDay: 1 for one-off access)",
+        "GE-XS2A §9.1.1.3 (recurringIndicator=false requires frequencyPerDay 1)"
+      ],
+      "verified": true
+    },
+    "sec.jws-request-target": {
+      "refs": [
+        "GE-JWS §7 ((request-target) mandatory)",
+        "GE-JWS §9.5"
+      ],
+      "verified": true
+    },
+    "flow.oauth-scope": {
+      "refs": [
+        "BG-IG §13 (OAuth2 SCA, scope AIS:<consentId>)",
+        "GE-IAA §6.7"
+      ],
+      "verified": true
+    },
+    "flow.detailed-consent": {
+      "refs": [
+        "BG-IG §6.3.1.1 (consent on dedicated accounts: access.accounts / balances / transactions)",
+        "GE-XS2A §9.2.1"
+      ],
+      "verified": false
+    },
+    "flow.oauth-prestep": {
+      "refs": [
+        "BG-IG §13 (OAuth2 as pre-step vs OAuth2 SCA)",
+        "BG-IG §6.3 (consent authorisation)"
+      ],
+      "verified": false
+    },
+    "live.consent-links": {
+      "refs": [
+        "BG-IG §6.3.1.1 (consent response _links)",
+        "GE-IAA §6.7"
+      ],
+      "verified": true
+    },
+    "live.redirect-uri-header": {
+      "refs": [
+        "BG-IG §5.3.1 (TPP-Redirect-URI)",
+        "BG-IG §6.3.1"
+      ],
+      "verified": true
+    },
+    "sec.response-signature-valid": {
+      "refs": [
+        "GE-JWS §10",
+        "GE-JWS §8.1",
+        "GE-XS2A §5.4"
+      ],
+      "verified": true,
+      "note": "Signature value checked with the key in x5c[0]; trust in the QSealC chain is judged separately."
+    },
+    "sec.jws-x5c-single": {
+      "refs": [
+        "GE-JWS §6 (x5c: one entry, the signing certificate)",
+        "GE-JWS §8.1"
+      ],
+      "verified": true
+    },
+    "sec.sigt-stale": {
+      "refs": [
+        "GE-JWS §5 (sigT more than 60 s old: must not be processed)",
+        "GE-XS2A §7.4"
+      ],
+      "verified": true
+    },
+    "sec.sigt-future": {
+      "refs": [
+        "GE-JWS §5 (sigT more than 2 s ahead: must not be processed)",
+        "GE-XS2A §7.4"
+      ],
+      "verified": true
+    },
+    "live.no-confirmation-link": {
+      "refs": [
+        "GE-IAA §6.7"
+      ],
+      "verified": true,
+      "note": "Redirect SCA: the bank must not return a confirmation link."
+    },
+    "pis.idempotency": {
+      "refs": [
+        "GE-XS2A §7.7"
+      ],
+      "verified": true,
+      "note": "X-Request-ID lets the bank tell a repeated request from a new one."
+    },
+    "pis.bulk": {
+      "refs": [
+        "GE-XS2A §8.3.2 (multiple payments)"
+      ],
+      "verified": false,
+      "note": "Bulk payments: listed by NBG as in use."
+    },
+    "pis.bulk-response": {
+      "refs": [
+        "BG-IG payment initiation response (section unverified)"
+      ],
+      "verified": false
+    },
+    "pis.multiple-recurring": {
+      "refs": [
+        "GE framework extension after XS2A 0.8.RC3"
+      ],
+      "verified": false,
+      "note": "Added by NBG after the 0.8.RC3 guide; judged against the bank's documented schema."
+    },
+    "pis.multiple-recurring-response": {
+      "refs": [
+        "BG-IG payment initiation response (section unverified)"
+      ],
+      "verified": false
+    },
+    "pis.secured": {
+      "refs": [
+        "GE framework extension after XS2A 0.8.RC3"
+      ],
+      "verified": false,
+      "note": "Judged against the bank's documented schema."
+    },
+    "pis.secured-response": {
+      "refs": [
+        "BG-IG payment initiation response (section unverified)"
+      ],
+      "verified": false
+    },
+    "spec.vrp": {
+      "refs": [],
+      "verified": false,
+      "note": "Informational. NBG lists variable recurring payments (VRPs) for sweeping as available but not yet in practical use (NBG, Open Banking in Georgia); GE-XS2A 0.8.RC3 predates the service and no published clause fixes its API."
+    },
+    "ux.consent-journey": {
+      "refs": [],
+      "verified": false,
+      "note": "Informational, not scored. No clause limits the steps of the SCA journey; screens, typed values, choices and TPP API steps are counted to compare banks (consent journey analysis)."
+    }
+  }
+}

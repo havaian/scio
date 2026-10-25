@@ -1,0 +1,10 @@
+# Include the universal template for deployment
+include:
+  - project: 'templates/gitlab-ci'
+    file: '.gitlab-ci-template.yml'
+
+# Deploy on the Mongo host (08.10.26): same machine as MongoDB, no network
+# hop per query. Job-level, so it overrides the template default.
+deploy:
+  variables:
+    DEPLOY_HOST: "141.98.153.217"

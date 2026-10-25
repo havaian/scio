@@ -1,0 +1,54 @@
+{
+  "_comment": "Placeholder thresholds until NBG regulatory indicators are confirmed. Every report labels these as assumptions.",
+  "source": "assumed",
+  "availabilityPct": 99.5,
+  "errorRatePct": 1.0,
+  "latencyP95Ms": 1000,
+  "latencyP99Ms": 2000,
+  "latencyMinSamples": 20,
+  "minEvaluatedChecks": 10,
+  "requestTimeoutMs": 15000,
+  "probeRepetitions": 30,
+  "probeSpacingMs": 200,
+  "tlsMinVersion": "TLSv1.2",
+  "certExpiryWarnDays": 30,
+  "aiAutoConfidence": 0.8,
+  "aiReviewConfidence": 0.5,
+  "minRunIntervalSec": 60,
+  "maxRunsPerDay": 1,
+  "schedule": {
+    "_comment": "Automated audits at daily slots, HH:MM in Tbilisi time (UTC+4). targets: all, or simulated (the organizers' mock only). Every slot set to all audits every target, real banks included (3 audits a day with the default slots); a slot that collides with a running audit is skipped. Without slots, timeTashkent (legacy) means one audit of all targets a day at that Tashkent time. manualRuns=false: no audits from the dashboard/API, only schedule and CLI. Disable with AUDIT_SCHEDULE_ENABLED=false.",
+    "enabled": true,
+    "manualRuns": false,
+    "timezone": "Asia/Tbilisi",
+    "slots": [
+      { "time": "09:00", "targets": "all" },
+      { "time": "15:00", "targets": "all" },
+      { "time": "21:00", "targets": "all" }
+    ]
+  },
+  "monitor": {
+    "_comment": "Continuous uptime monitor: one read-only request per target per interval (with the bank's test certificate when configured, so the answer is a real HTTP status). A failed sample is re-checked after confirmDownSec before it counts as down. Simulated targets (the mock only) also get a light authenticated AIS journey (accounts, balances, transactions) every authenticatedIntervalMin for the hour-of-day latency profile (0 = off). Disable with MONITOR_ENABLED=false.",
+    "simulatedIntervalMin": 5,
+    "realIntervalMin": 5,
+    "retentionDays": 100,
+    "confirmDownSec": 30,
+    "authenticatedIntervalMin": 15
+  },
+  "minLayerChecks": 3,
+  "alerts": {
+    "_comment": "Telegram and email alerts, evaluated from the database every pollSec. Needs at least one channel in the environment (TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID, or SMTP_HOST + ALERT_EMAIL_TO). Latency alerts when the median of HTTP-answered monitor samples over latencyWindowMin exceeds latencyAlertMs (a median threshold, separate from the p95 indicator latencyP95Ms; latencyP95Ms is used when latencyAlertMs is unset). auditFinished: one summary per finished audit (scores, failures, new high-severity failures per bank). Disable with ALERTS_ENABLED=false.",
+    "enabled": true,
+    "pollSec": 60,
+    "latencyWindowMin": 30,
+    "latencyAlertMs": 1000,
+    "certRepeatDays": 7,
+    "rules": {
+      "down": true,
+      "latency": true,
+      "newHighFindings": true,
+      "certExpiry": true,
+      "auditFinished": true
+    }
+  }
+}

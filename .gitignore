@@ -1,0 +1,18 @@
+node_modules/
+dist/
+# Anchored: only the runtime output folders, never src/reports or src/data
+/backend/data/
+/backend/reports/
+/reports/
+/data/
+*.sqlite
+*.sqlite-*
+.env
+# QVAC model files: kept locally in models/, never committed
+/models/*
+!/models/.gitkeep
+# Bank sandbox certificates and private keys
+/certs/*
+# Originals from the bank portals (.pfx / .p12 / .crt), kept outside certs/
+/_certs/
+!/certs/.gitkeep

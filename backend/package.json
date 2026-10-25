@@ -1,0 +1,45 @@
+{
+  "name": "scio-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Open banking API auditor: conformance, reliability, latency and security checks for Georgian open banking APIs",
+  "scripts": {
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "start:dev": "nest start --watch",
+    "audit": "node dist/cli.js",
+    "audit:dev": "ts-node src/cli.ts",
+    "qvac:setup": "node dist/qvac-setup.js",
+    "test": "node --test -r ts-node/register/transpile-only test/*.test.ts",
+    "runs:clear": "node dist/clear-runs.js",
+    "alerts:test": "node dist/alerts-test.js",
+    "mcp": "node dist/mcp-stdio.js"
+  },
+  "engines": {
+    "node": "^22.21.0 || >=24.9.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@nestjs/common": "^10.4.15",
+    "@nestjs/core": "^10.4.15",
+    "@nestjs/platform-express": "^10.4.15",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "nodemailer": "10.0.16",
+    "playwright-core": "1.56.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "undici": "^6.21.0",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.4.9",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "optionalDependencies": {
+    "@qvac/sdk": "0.21.1"
+  }
+}

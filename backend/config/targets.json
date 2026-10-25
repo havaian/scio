@@ -1,0 +1,238 @@
+{
+  "_comment": "Audit targets. 'full' targets run the complete consent + OAuth + AIS flow and active tests. 'passive' targets only get unauthenticated, read-only probes (discovery, TLS, mTLS enforcement, header validation). Keep public bank endpoints passive.",
+  "targets": [
+    {
+      "id": "tbc-mock",
+      "name": "TBC Bank (organizers' mock)",
+      "bank": "TBC Bank",
+      "mode": "full",
+      "simulated": true,
+      "baseUrl": "https://tbc-bank-mock-open-banking-api.vercel.app/0.8",
+      "oauthHost": "https://tbc-bank-mock-open-banking-api.vercel.app",
+      "specUrl": "https://tbc-bank-mock-open-banking-api.vercel.app/openapi.json",
+      "specFile": "config/specs/tbc-mock-openapi.json",
+      "redirectUri": "https://example.org/cb",
+      "clientId": "scio"
+    },
+    {
+      "id": "tbc-test",
+      "name": "TBC Bank (public test environment)",
+      "bank": "TBC Bank",
+      "mode": "passive",
+      "simulated": false,
+      "baseUrl": "https://test-openbanking.tbcbank.ge/0.8",
+      "discoveryUrl": "https://test-api.tbcbank.ge/.well-known/openid-configuration",
+      "source": "https://developers.tbcbank.ge/reference/aisapioverview",
+      "accountsPath": "/v1/accounts",
+      "credentials": {
+        "cert": "tbc/qwac.crt",
+        "key": "tbc/qwac.key",
+        "signCert": "tbc/qseal.crt",
+        "signKey": "tbc/qseal.key",
+        "passphraseEnv": "TBC_CERT_PASSWORD"
+      },
+      "note": "Documented at developers.tbcbank.ge (no downloadable spec). XS2A host and token endpoint require a client certificate (tls_client_auth). Test certificates and a test user requested from TBC; the sandbox journey starts once they are in certs/tbc/."
+    },
+    {
+      "id": "tbc-bis",
+      "name": "TBC Bank BIS - Accounts (test, proprietary)",
+      "bank": "TBC Bank",
+      "mode": "bis",
+      "simulated": false,
+      "baseUrl": "https://test-api.tbcbank.ge",
+      "accountsPath": "/bab/v1/accounts/movements",
+      "source": "https://developers.tbcbank.ge/reference/bis-accounts-api-overview",
+      "note": "TBC's own business API (not NextGenPSD2): judged against TBC's documentation. Read-only: token, movements, statement, balance, documented errors. Transfers are never called.",
+      "bis": {
+        "clientIdEnv": "TBC_BIS_CLIENT_ID",
+        "clientSecretEnv": "TBC_BIS_CLIENT_SECRET",
+        "scope": "bab_accounts"
+      }
+    },
+    {
+      "id": "tbc-prod",
+      "name": "TBC Bank (production discovery only)",
+      "bank": "TBC Bank",
+      "mode": "passive",
+      "simulated": false,
+      "baseUrl": "https://api.tbcbank.ge",
+      "discoveryUrl": "https://api.tbcbank.ge/.well-known/openid-configuration",
+      "skipEndpointProbes": true
+    },
+    {
+      "id": "procredit",
+      "name": "ProCredit Bank Georgia",
+      "bank": "ProCredit Bank",
+      "mode": "passive",
+      "simulated": false,
+      "baseUrl": "https://api.procreditbank.ge/0.8",
+      "source": "https://www.procreditbank.ge/en/open-banking",
+      "specFile": "config/specs/procredit-openapi.json",
+      "note": "Spec: the bank's test API document (servers online-test.procreditbank.ge/0.8/v1, not reachable from outside); production endpoint probed."
+    },
+    {
+      "id": "paysera-ge",
+      "name": "Paysera Bank Georgia (v0.8)",
+      "bank": "Paysera Bank Georgia",
+      "mode": "passive",
+      "simulated": false,
+      "baseUrl": "https://open-banking-api.paysera.com/xs2a/georgia/0.8",
+      "source": "https://nbg.gov.ge/en/page/open-banking-detailed-data-and-documentation",
+      "note": "No sandbox (confirmed by Paysera support, Oct 23): production only, access needs an NBG TPP licence and a QWAC from a CA recognised in Georgia, registered by Paysera; no test user. Documentation is web pages only (developers.paysera.com), no OpenAPI file, so only read-only front-door probes run."
+    },
+    {
+      "id": "bog-sandbox",
+      "name": "Bank of Georgia (sandbox)",
+      "bank": "Bank of Georgia",
+      "mode": "passive",
+      "simulated": false,
+      "baseUrl": "https://xs2a-sandbox.bog.ge/0.8",
+      "source": "https://api.bog.ge/docs/en/openbanking",
+      "specFile": "config/specs/bog-openapi.json",
+      "redirectUri": "https://scio.uz/callback",
+      "credentials": {
+        "cert": "bog/qwac.crt",
+        "key": "bog/qwac.key",
+        "signCert": "bog/qseal.crt",
+        "signKey": "bog/qseal.key",
+        "ca": "bog/root-ca.crt",
+        "passphraseEnv": "BOG_CERT_PASSWORD",
+        "clientIdEnv": "BOG_CLIENT_ID",
+        "psu": {
+          "user": "BOG_OB_SBX",
+          "password": "",
+          "passwordEnv": "BOG_PSU_PASSWORD",
+          "otp": "4444"
+        }
+      },
+      "note": "Sandbox access obtained by the team: Bank of Georgia issued test certificates (QWAC + QSealC) and a test user (BOG_OB_SBX, OTP 4444) on request. Full journey: mTLS, signed requests, OAuth, bank login, account reads."
+    },
+    {
+      "id": "liberty-sandbox",
+      "name": "Liberty Bank (sandbox)",
+      "bank": "Liberty Bank",
+      "mode": "passive",
+      "simulated": false,
+      "baseUrl": "https://openbankingxs2aapi-sandbox.lb.ge",
+      "source": "https://openbanking-sandbox.lb.ge/GettingStarted?culture=en-US",
+      "note": "Sandbox access obtained by the team: test certificate from Liberty's developer portal (certs/liberty/), demo user demo/demo, OTP 1234. Paths from the bank's published spec (/0.8/v1/...).",
+      "accountsPath": "/0.8/v1/accounts",
+      "specFile": "config/specs/liberty-openapi.json",
+      "credentials": {
+        "cert": "liberty/qwac.crt",
+        "key": "liberty/qwac.key",
+        "signCert": "liberty/qseal.crt",
+        "signKey": "liberty/qseal.key",
+        "ca": "liberty/root-ca.crt",
+        "passphraseEnv": "LIBERTY_CERT_PASSWORD",
+        "psu": {
+          "user": "demo",
+          "password": "demo",
+          "otp": "1234"
+        }
+      }
+    },
+    {
+      "id": "silk-sandbox",
+      "name": "Silk Bank (sandbox)",
+      "bank": "Silk Bank",
+      "mode": "passive",
+      "simulated": false,
+      "baseUrl": "https://psd2-xs2a-sandbox.silkbank.ge",
+      "source": "https://psd2-portal.silkbank.ge/GettingStarted?culture=en-US",
+      "note": "Sandbox access obtained by the team: test certificate from Silk's developer portal (certs/silk/), demo user demo/demo, OTP 1234. Paths from the bank's published spec (v2.0, /v2/...).",
+      "accountsPath": "/v2/accounts",
+      "specFile": "config/specs/silk-openapi.json",
+      "credentials": {
+        "cert": "silk/qwac.crt",
+        "key": "silk/qwac.key",
+        "signCert": "silk/qseal.crt",
+        "signKey": "silk/qseal.key",
+        "ca": "silk/root-ca.crt",
+        "passphraseEnv": "SILK_CERT_PASSWORD",
+        "psu": {
+          "user": "demo",
+          "password": "demo",
+          "otp": "1234"
+        }
+      }
+    },
+    {
+      "id": "cartu-sandbox",
+      "name": "Cartu Bank (sandbox)",
+      "bank": "Cartu Bank",
+      "mode": "passive",
+      "simulated": false,
+      "baseUrl": "https://sandboxv2-xs2aapi.cartubank.ge",
+      "source": "https://developerportal.cartubank.ge/GettingStarted?culture=en-US",
+      "note": "Cartu's certificate download returned 404, so the journey uses the team's Silk test certificate (same Alta Software platform); a refusal is reported as not testable. Demo user demo/demo, OTP 1234. Spec v2.0 (/v2/...).",
+      "accountsPath": "/v2/accounts",
+      "specFile": "config/specs/cartu-openapi.json",
+      "credentials": {
+        "cert": "silk/qwac.crt",
+        "key": "silk/qwac.key",
+        "signCert": "silk/qseal.crt",
+        "signKey": "silk/qseal.key",
+        "ca": "silk/root-ca.crt",
+        "passphraseEnv": "SILK_CERT_PASSWORD",
+        "psu": {
+          "user": "demo",
+          "password": "demo",
+          "otp": "1234"
+        }
+      }
+    },
+    {
+      "id": "credo-sandbox",
+      "name": "Credo Bank (sandbox)",
+      "bank": "Credo Bank",
+      "mode": "passive",
+      "simulated": false,
+      "baseUrl": "https://openbankgw.credo.ge/sandbox/0.8/v1",
+      "accountsPath": "/accounts",
+      "discoveryUrl": "https://openbanking.credo.ge/ob-oidc/.well-known/openid-configuration",
+      "specFile": "config/specs/credo-openapi.json",
+      "redirectUri": "https://scio.uz/callback",
+      "source": "https://openbanking.credo.ge/ob-home/",
+      "note": "Sandbox host and demo user (testclient / testclient, OTP 111111) published on Credo's portal. Sandbox certificate and client ID requested; the journey starts once they are in certs/credo/ and CREDO_CLIENT_ID / CREDO_CLIENT_SECRET are set.",
+      "credentials": {
+        "cert": "credo/qwac.crt",
+        "key": "credo/qwac.key",
+        "signCert": "credo/qseal.crt",
+        "signKey": "credo/qseal.key",
+        "passphraseEnv": "CREDO_CERT_PASSWORD",
+        "clientSecretEnv": "CREDO_CLIENT_SECRET",
+        "psu": {
+          "user": "testclient",
+          "password": "testclient",
+          "otp": "111111"
+        },
+        "clientIdEnv": "CREDO_CLIENT_ID"
+      }
+    },
+    {
+      "id": "terabank-spec",
+      "name": "Terabank (published spec only)",
+      "bank": "Terabank",
+      "mode": "passive",
+      "simulated": false,
+      "specOnly": true,
+      "baseUrl": "https://psd2-portal.terabank.ge",
+      "specFile": "config/specs/terabank-openapi.json",
+      "note": "Only the OpenAPI document is checked: the developer portal shows an error and no sandbox host is published."
+    },
+    {
+      "id": "pasha-spec",
+      "name": "PASHA Bank Georgia (published spec only)",
+      "bank": "PASHA Bank Georgia",
+      "mode": "passive",
+      "simulated": false,
+      "specOnly": true,
+      "baseUrl": "https://psd2-portal.pashabank.ge",
+      "specFile": "config/specs/pasha-openapi.json",
+      "source": "https://pashabank.ge/en/open-banking",
+      "note": "Only the OpenAPI document is checked: the developer portal shows an error and no sandbox host is published."
+    }
+  ],
+  "_sources": "Banks and portals: NBG list of ASPSPs, https://nbg.gov.ge/en/page/open-banking-detailed-data-and-documentation. 'source' = page where the endpoint was found; 'note' = what is assumed."
+}

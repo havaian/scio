@@ -1,0 +1,73 @@
+name: scio
+
+services:
+  backend:
+    build:
+      context: ./backend
+      args:
+        # true = include the local AI SDK (QVAC). Larger image; download the models once with qvac:setup (see README).
+        WITH_QVAC: ${WITH_QVAC:-false}
+        # true = Chromium for bank login pages built as JavaScript apps (about 300 MB). false = plain form filler only.
+        WITH_BROWSER: ${WITH_BROWSER:-true}
+    restart: unless-stopped
+    environment:
+      PORT: 3000
+      DB_FILE: /app/data/scio.sqlite
+      # Optional: exact origin(s), comma-separated, allowed to call the API from another site. Empty = CORS off (the dashboard is same-origin).
+      CORS_ORIGIN: ${CORS_ORIGIN:-}
+      # Optional: enables the AI layer. Put TYPESAFE_API_KEY=... in a .env file next to this file.
+      TYPESAFE_API_KEY: ${TYPESAFE_API_KEY:-}
+      # Optional: local AI (QVAC). Requires WITH_QVAC=true at build time.
+      QVAC_ENABLED: ${QVAC_ENABLED:-false}
+      # Continuous uptime monitor; false turns it off.
+      MONITOR_ENABLED: ${MONITOR_ENABLED:-true}
+      # Automated daily audit (time in backend/config/thresholds.json); false turns it off.
+      AUDIT_SCHEDULE_ENABLED: ${AUDIT_SCHEDULE_ENABLED:-true}
+      # Bank sandbox test certificates (certs/<bank>/client.crt + client.key) and their key passwords.
+      CERT_DIR: /app/certs
+      LIBERTY_CERT_PASSWORD: ${LIBERTY_CERT_PASSWORD:-}
+      SILK_CERT_PASSWORD: ${SILK_CERT_PASSWORD:-}
+      CARTU_CERT_PASSWORD: ${CARTU_CERT_PASSWORD:-}
+      TBC_CERT_PASSWORD: ${TBC_CERT_PASSWORD:-}
+      CREDO_CERT_PASSWORD: ${CREDO_CERT_PASSWORD:-}
+      CREDO_CLIENT_ID: ${CREDO_CLIENT_ID:-}
+      CREDO_CLIENT_SECRET: ${CREDO_CLIENT_SECRET:-}
+      BOG_CERT_PASSWORD: ${BOG_CERT_PASSWORD:-}
+      BOG_CLIENT_ID: ${BOG_CLIENT_ID:-}
+      BOG_PSU_PASSWORD: ${BOG_PSU_PASSWORD:-}
+      # TBC BIS - Accounts app credentials (myapps.tbcbank.ge), read-only scope bab_accounts.
+      TBC_BIS_CLIENT_ID: ${TBC_BIS_CLIENT_ID:-}
+      TBC_BIS_CLIENT_SECRET: ${TBC_BIS_CLIENT_SECRET:-}
+      # Optional alerts (Telegram and/or SMTP email); off until a channel is set. See README "Alerting".
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-}
+      SMTP_SECURE: ${SMTP_SECURE:-}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      ALERT_EMAIL_TO: ${ALERT_EMAIL_TO:-}
+      ALERTS_ENABLED: ${ALERTS_ENABLED:-}
+      PUBLIC_URL: ${PUBLIC_URL:-}
+    volumes:
+      - scio-data:/app/data
+      # QVAC model files (about 1.33 GB), kept in the repo's models/ folder, git-ignored.
+      - ./models:/app/models
+      - ./backend/config:/app/config:ro
+      # Test certificates from the bank portals, git-ignored.
+      - ./certs:/app/certs:ro
+    expose:
+      - "3000"
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      # Localhost only: the host nginx (scio.uz) proxies to this port.
+      - "127.0.0.1:4530:80"
+
+volumes:
+  scio-data:
